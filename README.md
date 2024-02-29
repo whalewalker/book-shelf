@@ -2,7 +2,7 @@
 
 Welcome to Bookshelf, a NestJS application for managing a collection of books.
 
-[Swagger Documentation](localhost:3000/api#/) - Explore the API endpoints using Swagger UI.
+[Swagger Documentation](http://localhost:3000/api#/) - Explore the API endpoints using Swagger UI.
 
 
 ## Installation 
