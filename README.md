@@ -51,12 +51,6 @@ $ npm run test:cov
 1. Return appropriate error messages and HTTP status codes for various scenarios.
 2. Ensure the application is consistently up and running with minimal downtime.
 
-## Additional Features
-
-- **Sort books by type and language**
-- **Filter books by name, ISBN**
-- **Search books by name, ISBN**
-
 ## Author
 
 [Abdullah Ismail](https://github.com/whalewalker)
