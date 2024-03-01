@@ -1,12 +1,12 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-import { ApiProperty } from '@nestjs/swagger';
-
-export class BookDto {
+export class UpdateBookDto {
   @ApiProperty({
     example: 'My Love From Another Star',
     description: 'The title of the book',
   })
+  @IsOptional()
   @IsNotEmpty({ message: 'Title is required' })
   @IsString({ message: 'Title must be a string' })
   title?: string;
@@ -14,6 +14,7 @@ export class BookDto {
   @ApiProperty({ example: '1234567890', description: 'The ISBN of the book' })
   @IsNotEmpty({ message: 'ISBN is required' })
   @IsString({ message: 'ISBN must be a string' })
+  @IsOptional()
   isbn?: string;
 
   @ApiProperty({
@@ -32,5 +33,6 @@ export class BookDto {
   @ApiProperty({ example: 'John Doe', description: 'The author of the book' })
   @IsNotEmpty({ message: 'Author is required' })
   @IsString({ message: 'Author must be a string' })
+  @IsOptional()
   author?: string;
 }

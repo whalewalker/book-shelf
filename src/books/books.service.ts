@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BookDto } from './dto/book.dto';
+import { CreateBookDto } from './dto/create-book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from './entities/book.entity';
@@ -7,6 +7,7 @@ import { ResourceAlreadyExistException } from './exceptions/resource-already-exi
 import { ResourceNotFoundException } from './exceptions/resource-not-found-exception';
 import { Response } from './dto/response';
 import { ResponseUtil } from './util/response-util';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BooksService {
@@ -14,7 +15,7 @@ export class BooksService {
     @InjectRepository(Book) private bookRepository: Repository<Book>,
   ) {}
 
-  async create(bookDto: BookDto): Promise<Response<Book>> {
+  async create(bookDto: CreateBookDto): Promise<Response<Book>> {
     const existingBookWithTitle = await this.bookRepository.findOne({
       where: { title: bookDto.title },
     });
@@ -51,7 +52,7 @@ export class BooksService {
     return ResponseUtil.successfulResponse<Book>([book]);
   }
 
-  async update(id: number, bookDto: BookDto): Promise<Response<Book>> {
+  async update(id: number, bookDto: UpdateBookDto): Promise<Response<Book>> {
     const book = await this.bookRepository.findOne({ where: { id } });
 
     if (!book) {

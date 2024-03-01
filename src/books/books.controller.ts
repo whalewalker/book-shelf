@@ -9,9 +9,10 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { BookDto } from './dto/book.dto';
+import { CreateBookDto } from './dto/create-book.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Book } from './entities/book.entity';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @ApiTags('books')
 @Controller('books')
@@ -20,14 +21,14 @@ export class BooksController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new book' })
-  @ApiBody({ type: BookDto })
+  @ApiBody({ type: CreateBookDto })
   @ApiResponse({
     status: 201,
     description: 'The book has been successfully created',
     type: Book,
   })
   create(
-    @Body(new ValidationPipe({ transform: true })) createBookDto: BookDto,
+    @Body(new ValidationPipe({ transform: true })) createBookDto: CreateBookDto,
   ) {
     return this.booksService.create(createBookDto);
   }
@@ -52,13 +53,13 @@ export class BooksController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a book by ID' })
-  @ApiBody({ type: BookDto })
+  @ApiBody({ type: CreateBookDto })
   @ApiResponse({
     status: 200,
     description: 'The book has been successfully updated',
     type: Book,
   })
-  update(@Param('id') id: string, @Body() bookDto: BookDto) {
+  update(@Param('id') id: string, @Body() bookDto: UpdateBookDto) {
     return this.booksService.update(+id, bookDto);
   }
 

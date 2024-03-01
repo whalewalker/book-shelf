@@ -3,15 +3,16 @@ import { BooksService } from './books.service';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Book } from './entities/book.entity';
-import { BookDto } from './dto/book.dto';
+import { CreateBookDto } from './dto/create-book.dto';
 import { ResourceAlreadyExistException } from './exceptions/resource-already-exist-exception';
 import { generateRandomBooks } from './util/helper';
 import { ResourceNotFoundException } from './exceptions/resource-not-found-exception';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 describe('BooksService', () => {
   let service: BooksService;
   let bookRepository: Repository<Book>;
-  let createBookDto: BookDto;
+  let createBookDto: CreateBookDto;
 
   beforeEach(async () => {
     createBookDto = {
@@ -126,7 +127,7 @@ describe('BooksService', () => {
 
   describe('update', () => {
     it('should update the book with the specified id', async () => {
-      const updateBookDto: BookDto = { title: 'Updated Title' };
+      const updateBookDto: UpdateBookDto = { title: 'Updated Title' };
       const existingBook: Book = generateRandomBooks(1)[0];
       const updatedBook: Book = { ...existingBook, ...updateBookDto };
 
@@ -144,7 +145,7 @@ describe('BooksService', () => {
 
     it('should throw ResourceNotFoundException if no book with the specified id exists', async () => {
       const bookId = 1;
-      const updateBookDto: BookDto = { title: 'Updated Title' };
+      const updateBookDto: CreateBookDto = { title: 'Updated Title' };
 
       jest.spyOn(bookRepository, 'findOne').mockResolvedValue(null);
 
