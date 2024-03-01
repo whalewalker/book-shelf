@@ -11,6 +11,7 @@ import { Book } from './books/entities/book.entity';
       entities: [Book],
       synchronize: true,
       database: 'book_shelf',
+      ssl: true,
     }),
     BooksModule,
   ],
