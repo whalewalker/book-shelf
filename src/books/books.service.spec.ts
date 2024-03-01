@@ -8,11 +8,14 @@ import { ResourceAlreadyExistException } from './exceptions/resource-already-exi
 import { generateRandomBooks } from './util/helper';
 import { ResourceNotFoundException } from './exceptions/resource-not-found-exception';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { Response } from './dto/response';
+import { ResponseUtil } from './util/response-util';
 
 describe('BooksService', () => {
   let service: BooksService;
   let bookRepository: Repository<Book>;
   let createBookDto: CreateBookDto;
+  let response: Response<Book>;
 
   beforeEach(async () => {
     createBookDto = {
@@ -20,6 +23,7 @@ describe('BooksService', () => {
       title: 'Test Book',
       isbn: '1234567890',
     };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         BooksService,
@@ -48,7 +52,7 @@ describe('BooksService', () => {
 
       jest.spyOn(bookRepository, 'create').mockReturnValue(book);
 
-      jest.spyOn(bookRepository, 'save').mockResolvedValue(null);
+      jest.spyOn(bookRepository, 'save').mockResolvedValue(book);
 
       await expect(service.create(createBookDto)).resolves.not.toThrow();
 
@@ -99,7 +103,7 @@ describe('BooksService', () => {
 
       const result = await service.findAll();
 
-      expect(result).toEqual(books);
+      expect(result).toEqual(ResponseUtil.successfulResponse([books]));
     });
   });
 
@@ -112,7 +116,7 @@ describe('BooksService', () => {
 
       const result = await service.findOne(bookId);
 
-      expect(result).toEqual(book);
+      expect(result).toEqual(ResponseUtil.successfulResponse([book]));
     });
 
     it('should throw ResourceNotFoundException if no book with the specified id exists', async () => {
@@ -140,7 +144,7 @@ describe('BooksService', () => {
         where: { id: existingBook.id },
       });
       expect(bookRepository.save).toHaveBeenCalledWith(updatedBook);
-      expect(result).toEqual(updatedBook);
+      expect(result).toEqual(ResponseUtil.successfulResponse([updatedBook]));
     });
 
     it('should throw ResourceNotFoundException if no book with the specified id exists', async () => {
@@ -169,7 +173,12 @@ describe('BooksService', () => {
         where: { id: bookId },
       });
       expect(bookRepository.remove).toHaveBeenCalledWith(existingBook);
-      expect(result).toEqual(`Book with id ${bookId} removed successfully`);
+      expect(result).toEqual(
+        ResponseUtil.successfulResponse(
+          [],
+          `Book with id ${bookId} removed successfully`,
+        ),
+      );
     });
 
     it('should throw ResourceNotFoundException if no book with the specified id exists', async () => {
