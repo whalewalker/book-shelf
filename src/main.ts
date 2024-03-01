@@ -10,8 +10,10 @@ import {
   ServerExceptionFilter,
 } from './books/exceptions/global-exception.filter';
 import { Error } from './books/dto/response';
+import * as dotenv from 'dotenv';
 
 async function bootstrap() {
+  dotenv.config();
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalFilters(
