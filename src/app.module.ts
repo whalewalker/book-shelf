@@ -6,16 +6,11 @@ import { Book } from './books/entities/book.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'password',
-      database: 'book_shelf',
+      url: 'postgres://book_shelf_user:Kbdq1CUnKdjLPVoF2IdFqXHtsP7OA4D4@dpg-cnguv5a0si5c73blguc0-a.oregon-postgres.render.com/book_shelf',
+      type: 'postgres',
       entities: [Book],
       synchronize: true,
-      timezone: '+01:00',
-      dateStrings: true,
+      database: 'book_shelf',
     }),
     BooksModule,
   ],
