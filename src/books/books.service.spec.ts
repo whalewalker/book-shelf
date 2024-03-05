@@ -16,7 +16,7 @@ describe('BooksService', () => {
   let createBookDto: CreateBookDto;
 
   beforeEach(async () => {
-    createBookDto = {
+    createBookDto = <CreateBookDto>{
       author: 'Abdullah',
       title: 'Test Book',
       isbn: '1234567890',
@@ -101,7 +101,7 @@ describe('BooksService', () => {
 
       const result = await service.findAll();
 
-      expect(result).toEqual(ResponseUtil.successfulResponse([books]));
+      expect(result).toEqual(ResponseUtil.successfulResponse(books));
     });
   });
 
@@ -129,7 +129,7 @@ describe('BooksService', () => {
 
   describe('update', () => {
     it('should update the book with the specified id', async () => {
-      const updateBookDto: UpdateBookDto = { title: 'Updated Title' };
+      const updateBookDto: UpdateBookDto = { author: 'Whale-walker' };
       const existingBook: Book = generateRandomBooks(1)[0];
       const updatedBook: Book = { ...existingBook, ...updateBookDto };
 
@@ -147,7 +147,9 @@ describe('BooksService', () => {
 
     it('should throw ResourceNotFoundException if no book with the specified id exists', async () => {
       const bookId = 1;
-      const updateBookDto: CreateBookDto = { title: 'Updated Title' };
+      const updateBookDto: UpdateBookDto = <CreateBookDto>{
+        title: 'Updated Title',
+      };
 
       jest.spyOn(bookRepository, 'findOne').mockResolvedValue(null);
 
