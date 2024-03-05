@@ -8,14 +8,12 @@ import { ResourceAlreadyExistException } from './exceptions/resource-already-exi
 import { generateRandomBooks } from './util/helper';
 import { ResourceNotFoundException } from './exceptions/resource-not-found-exception';
 import { UpdateBookDto } from './dto/update-book.dto';
-import { Response } from './dto/response';
 import { ResponseUtil } from './util/response-util';
 
 describe('BooksService', () => {
   let service: BooksService;
   let bookRepository: Repository<Book>;
   let createBookDto: CreateBookDto;
-  let response: Response<Book>;
 
   beforeEach(async () => {
     createBookDto = {

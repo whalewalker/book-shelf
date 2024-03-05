@@ -16,23 +16,8 @@ export class BooksService {
   ) {}
 
   async create(bookDto: CreateBookDto): Promise<Response<Book>> {
-    const existingBookWithTitle = await this.bookRepository.findOne({
-      where: { title: bookDto.title },
-    });
-    if (existingBookWithTitle) {
-      throw new ResourceAlreadyExistException(
-        'Book with this title already exists',
-      );
-    }
-
-    const existingBookWithISBN = await this.bookRepository.findOne({
-      where: { isbn: bookDto.isbn },
-    });
-    if (existingBookWithISBN) {
-      throw new ResourceAlreadyExistException(
-        'Book with this ISBN already exists',
-      );
-    }
+    await this.validateTitle(bookDto.title);
+    await this.validateISBN(bookDto.isbn);
 
     const book = this.bookRepository.create(bookDto);
     await this.bookRepository.save(book);
@@ -59,7 +44,11 @@ export class BooksService {
       throw new ResourceNotFoundException(`Book with id ${id} not found`);
     }
 
+    if (bookDto.title) await this.validateTitle(bookDto.title);
+    if (bookDto.isbn) await this.validateISBN(bookDto.isbn);
+
     Object.assign(book, bookDto);
+
     const updatedBook = await this.bookRepository.save(book);
     return ResponseUtil.successfulResponse<Book>([updatedBook]);
   }
@@ -76,5 +65,27 @@ export class BooksService {
       [],
       `Book with id ${id} removed successfully`,
     );
+  }
+
+  private async validateISBN(isbn: string) {
+    const existingBookWithISBN = await this.bookRepository.findOne({
+      where: { isbn },
+    });
+    if (existingBookWithISBN) {
+      throw new ResourceAlreadyExistException(
+        'Book with this ISBN already exists',
+      );
+    }
+  }
+
+  private async validateTitle(title: string) {
+    const existingBookWithTitle = await this.bookRepository.findOne({
+      where: { title },
+    });
+    if (existingBookWithTitle) {
+      throw new ResourceAlreadyExistException(
+        'Book with this title already exists',
+      );
+    }
   }
 }
